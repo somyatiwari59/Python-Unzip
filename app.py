@@ -9,7 +9,7 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['POST'])
 def main():
-    myZipFile = request.data
+    myZipFile = request.content
     print(myZipFile)
     decoded_base64 = base64.b64encode(myZipFile)
 
