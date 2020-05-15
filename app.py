@@ -11,7 +11,7 @@ app.config["DEBUG"] = True
 def main():
     myZipFile = request.data
     print(myZipFile)
-    decoded_base64 = base64.b64decode(myZipFile)
+    decoded_base64 = base64.b64encode(myZipFile)
 
     headers = flask.request.headers
     zipdata = BytesIO()
