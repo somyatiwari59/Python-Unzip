@@ -11,13 +11,13 @@ app.config["DEBUG"] = True
 def main():
     myZipFile = request.data
     headers = flask.request.headers
-    with open(myZipFile, 'wb') as result:
+    zipdata = BytesIO()
+    zipdata.write(myZipFile)
+    with open(zipdata, 'wb') as result:
         result.write(base64.b64decode(d))
     print(headers)
     pID = headers.get('parent-id')
     print(pID)
-    zipdata = BytesIO()
-    zipdata.write(myZipFile)
     with zipfile.ZipFile(zipdata) as zip_ref:
         for info in zip_ref.infolist():
             data = info.filename
