@@ -3,18 +3,19 @@ from flask import request
 import zipfile
 import requests
 from io import BytesIO
-
+import base64
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 @app.route('/', methods=['POST'])
 def main():
     myZipFile = request.data
+
+    decoded_base64 = base64.b64decode(myZipFile)
+
     headers = flask.request.headers
     zipdata = BytesIO()
-    zipdata.write(myZipFile)
-    with open(zipdata, 'wb') as result:
-        result.write(base64.b64decode(d))
+    zipdata.write(decoded_base64)
     print(headers)
     pID = headers.get('parent-id')
     print(pID)
