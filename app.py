@@ -9,9 +9,6 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['POST'])
 def main():
-    print(request.method)
-    print(request.files)
-    print(request)
     myZipFile = request.data
     print(myZipFile)
     headers = flask.request.headers
@@ -19,6 +16,10 @@ def main():
     zipdata.write(myZipFile)
     pID = headers.get('parent-id')
     print(pID)
+    while( !zipfile.is_zipfile):
+        myZipFile = request.data
+        zipdata = BytesIO()
+        zipdata.write(myZipFile)
     with zipfile.ZipFile(zipdata) as zip_ref:
         for info in zip_ref.infolist():
             data = info.filename
