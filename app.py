@@ -20,7 +20,7 @@ def main():
     pID = headers.get('parent-id')
     print(pID)
     respIds = []
-    if zipfile.is_ZipFile(zipdata):
+    if zipfile.is_zipfile(zipdata):
         with zipfile.ZipFile(zipdata) as zip_ref:
             for info in zip_ref.infolist():
                 data = info.filename
