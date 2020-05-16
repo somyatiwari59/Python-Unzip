@@ -19,16 +19,28 @@ def main():
     zipdata.write(myZipFile)
     pID = headers.get('parent-id')
     print(pID)
-    i = 1
-    with zipfile.ZipFile(zipdata) as zip_ref:
-        for info in zip_ref.infolist():
-            data = info.filename
-            myHTML = zip_ref.read(data)
-            headToSend = {'parent-id' : pID}
-            respData['fileName' + i] = data
-            req = requests.post('https://ccdev3-moneyspot.cs57.force.com/services/apexrest/GetSeperateFiles/', data=myHTML, headers=headToSend)
-            respData['fileName' + i + 'status'] = req
-            i = i + 1
+    respIds = []
+    if zipfile.is_ZipFile(zipdata):
+        with zipfile.ZipFile(zipdata) as zip_ref:
+            for info in zip_ref.infolist():
+                data = info.filename
+                myHTML = zip_ref.read(data)
+                headToSend = {'parent-id' : pID}
+                temp = {}
+                req = requests.post('https://ccdev3-moneyspot.cs57.force.com/services/apexrest/GetSeperateFiles/', data=myHTML, headers=headToSend)
+                if req.status_code != 200:
+                    temp['name'] = data
+                    temp['status'] = 'failed'
+                else :
+                    temp['name'] = data
+                    temp['status'] = 'success'
+                    temp['id'] = req.text
+                respIds.append(temp)
+        respData['data'] = respIds
+        respData['success'] = True
+    else:
+        respData['success'] = False
+
     response = app.response_class(
         response = json.dumps(respData),
         status = 200,
