@@ -9,9 +9,9 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['POST'])
 def main():
-    myZipFile = request.content
+    myZipFile = request.data
     print(myZipFile)
-    decoded_base64 = base64.b64encode(myZipFile)
+    decoded_base64 = base64.b64decode(myZipFile)
 
     headers = flask.request.headers
     zipdata = BytesIO()
