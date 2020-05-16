@@ -16,7 +16,7 @@ def main():
     zipdata.write(myZipFile)
     pID = headers.get('parent-id')
     print(pID)
-    while( zipfile.is_zipfile == False):
+    while( zipfile.is_zipfile(zipdata) == False):
         myZipFile = request.data
         zipdata = BytesIO()
         zipdata.write(myZipFile)
