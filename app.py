@@ -11,12 +11,9 @@ app.config["DEBUG"] = True
 def main():
     myZipFile = request.data
     print(myZipFile)
-    decoded_base64 = base64.b64decode(myZipFile)
-
     headers = flask.request.headers
     zipdata = BytesIO()
-    zipdata.write(decoded_base64)
-    print(headers)
+    zipdata.write(myZipFile)
     pID = headers.get('parent-id')
     print(pID)
     with zipfile.ZipFile(zipdata) as zip_ref:
