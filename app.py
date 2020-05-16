@@ -9,6 +9,11 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['POST'])
 def main():
+    print(request.method)
+    print(request.get_JSON())
+    print(request.form)
+    print(request.files)
+    print(request)
     myZipFile = request.data
     print(myZipFile)
     headers = flask.request.headers
