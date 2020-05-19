@@ -18,16 +18,20 @@ def main():
     zipdata = BytesIO()
     zipdata.write(myZipFile)
     pID = headers.get('parent-id')
+    returnURL = headers.get('return-url')
     print(pID)
     respIds = []
+    #https://ccdev3-moneyspot.cs57.force.com/services/apexrest/GetSeperateFiles/
     if zipfile.is_zipfile(zipdata):
         with zipfile.ZipFile(zipdata) as zip_ref:
             for info in zip_ref.infolist():
                 data = info.filename
                 myHTML = zip_ref.read(data)
-                headToSend = {'parent-id' : pID}
+                headToSend = {}
+                headToSend['parent-id'] = pID
+                headToSend['name'] = data
                 temp = {}
-                req = requests.post('https://ccdev3-moneyspot.cs57.force.com/services/apexrest/GetSeperateFiles/', data=myHTML, headers=headToSend)
+                req = requests.post(returnURL, data=myHTML, headers=headToSend)
                 if req.status_code != 200:
                     temp['name'] = data
                     temp['status'] = 'failed'
